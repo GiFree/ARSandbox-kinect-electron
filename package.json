@@ -1,0 +1,16 @@
+{
+  "name": "arsandbox-electron",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "GiFree",
+  "license": "ISC",
+  "dependencies": {
+    "colormap": "^2.3.0",
+    "electron": "^2.0.2",
+    "kinect2": "^0.1.5"
+  }
+}
