@@ -1,6 +1,7 @@
 const Kinect2 = require('kinect2');
 const colormap = require('colormap');
 const kinect = new Kinect2();
+const remote = require('electron').remote;
 
 let diff = 26;
 let min = 64
@@ -23,14 +24,16 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log(e.keyCode);
     if (e.keyCode) {
 
-      if (e.keyCode === 38) {
+      if (e.keyCode === 38 && max() < 254) {
         min++;
-      } else if (e.keyCode === 40) {
+      } else if (e.keyCode === 40 && min > 2) {
         min--;
-      } else if (e.keyCode === 39) {
+      } else if (e.keyCode === 39 && diff < 64) {
         diff++;
-      } else if (e.keyCode === 37) {
+      } else if (e.keyCode === 37 && diff > 2) {
         diff--;
+      } else if (e.keyCode === 27) {
+        remote.getCurrentWindow().close();
       }
     }
   })
