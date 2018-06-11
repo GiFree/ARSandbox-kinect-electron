@@ -51,19 +51,28 @@ document.addEventListener('DOMContentLoaded', () => {
       const newPixelData = new Uint8Array(imageBuffer);
       let depthPixelIndex = 0;
 
-      for (let i = 0; i < imageDataSize; i += 4) {
-
-        let grey = newPixelData[depthPixelIndex];
-
+      const normalized = newPixelData.map((grey) => {
         if (grey > max()) {
           grey = max();
         } else if (grey < min) {
           grey = min;
         }
+        return Math.abs(Math.round((grey - min) / (max() - min) * 15));
+      })
 
-        const normalized = Math.abs(Math.round((grey - min) / (max() - min) * 15));
+      for (let i = 0; i < imageDataSize; i += 4) {
 
-        const heat = colors[normalized];
+        const grey = normalized[depthPixelIndex];
+        const lastPixel = normalized[depthPixelIndex - 1];
+        const upperPixel = normalized[depthPixelIndex - 512]
+        let heat = [];
+
+        if ((lastPixel !== grey && lastPixel !== 255) || (upperPixel !== grey && upperPixel !== 255)) {
+          normalized[depthPixelIndex - 1] = 255;
+          heat = [0, 0, 0];
+        } else {
+          heat = colors[grey];
+        }
 
         pixelArray[i] = heat[0];
         pixelArray[i + 1] = heat[1];
