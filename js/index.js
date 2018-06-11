@@ -6,7 +6,7 @@ const remote = require('electron').remote;
 let diff = 26;
 let min = 64
 let max = () => (min + diff);
-
+let outline = false;
 const colors = colormap({
   colormap: 'earth',
   nshades: 16,
@@ -34,6 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
         diff--;
       } else if (e.keyCode === 27) {
         remote.getCurrentWindow().close();
+      } else if (e.keyCode === 13) {
+        outline = !outline;
       }
     }
   })
@@ -67,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const upperPixel = normalized[depthPixelIndex - 512]
         let heat = [];
 
-        if ((lastPixel !== grey && lastPixel !== 255) || (upperPixel !== grey && upperPixel !== 255)) {
+        if (outline && ((lastPixel !== grey && lastPixel !== 255) || (upperPixel !== grey && upperPixel !== 255))) {
           normalized[depthPixelIndex - 1] = 255;
           heat = [0, 0, 0];
         } else {
